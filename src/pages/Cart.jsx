@@ -1,5 +1,6 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
+import { MinusCircle, Trash2 } from "lucide-react";
 
 const Cart = () => {
     const { cart, removeFromCart, decreaseFromCart, clearCart } = useCart();
@@ -11,7 +12,7 @@ const Cart = () => {
     }, 0);
 
     return (
-        <div className="max-w-4xl mx-auto p-4 mt-8 bg-white shadow-lg rounded-lg dark:bg-gray-800 min-h-screen margin-botom 2dvh">
+        <div className="max-w-4xl mx-auto p-4 my-8 bg-white shadow-md rounded-xl dark:bg-gray-800 min-h-screen">
             <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">🛒 Tu Carrito</h2>
 
             {cart.length === 0 ? (
@@ -26,13 +27,13 @@ const Cart = () => {
                             return (
                                 <li
                                     key={item.id}
-                                    className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg"
+                                    className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm"
                                 >
                                     <div className="flex items-center gap-4 w-full sm:w-auto">
                                         <img
                                             src={item.imagen}
                                             alt={item.nombre}
-                                            className="w-20 h-20 object-cover rounded"
+                                            className="w-20 h-20 object-cover rounded-lg"
                                         />
                                         <div>
                                             <h3 className="text-lg font-semibold dark:text-white">{item.nombre}</h3>
@@ -42,22 +43,24 @@ const Cart = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full sm:w-auto">
-                                        <p className="text-lg font-semibold text-center dark:text-white">
+                                    <div className="flex flex-col sm:items-end gap-2 w-full sm:w-auto">
+                                        <p className="text-lg font-semibold dark:text-white text-center sm:text-right">
                                             ${(precio * cantidad).toFixed(2)}
                                         </p>
-                                        <div className="flex justify-center gap-2 mt-2 sm:mt-0">
+                                        <div className="flex gap-2 justify-center sm:justify-end">
                                             <button
                                                 onClick={() => decreaseFromCart(item.id)}
-                                                className="px-2 py-1 text-sm bg-yellow-400 hover:bg-yellow-500 text-white rounded"
+                                                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 transition"
+                                                title="Quitar uno"
                                             >
-                                                ➖ Quitar uno
+                                                <MinusCircle className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                             </button>
                                             <button
                                                 onClick={() => removeFromCart(item.id)}
-                                                className="px-2 py-1 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
+                                                className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 transition"
+                                                title="Eliminar todos"
                                             >
-                                                🗑️ Eliminar todos
+                                                <Trash2 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                             </button>
                                         </div>
                                     </div>
@@ -79,7 +82,7 @@ const Cart = () => {
                         </button>
                         <button
                             onClick={clearCart}
-                            className="w-full mt-4 text-sm text-gray-600 hover:underline dark:text-gray-300"
+                            className="w-full mt-4 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white transition"
                         >
                             Vaciar carrito
                         </button>

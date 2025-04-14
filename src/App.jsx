@@ -94,21 +94,23 @@ const App = () => {
                 {/* Encabezado */}
                 <header className={`${darkMode ? 'bg-blue-900' : 'bg-blue-600'} text-white p-4 shadow-md fixed w-full top-0 z-30`}>
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
-                        <div className={`${darkMode ? 'text-gray-100' : 'text-gray-100'} text-2xl font-bold`}>SurfShop</div>
+                        <Link to="/" className={`${darkMode ? 'text-gray-100' : 'text-gray-100'} text-2xl font-bold`}>
+                            SurfShop
+                        </Link>
                         <nav className="hidden sm:flex">
                             <ul className="flex space-x-6">
-                                <li><Link to="/" className="hover:text-blue-200">Home</Link></li>
+                                {/* Eliminar Home */}
                                 <li><Link to="/shop" className="hover:text-blue-200">Shop</Link></li>
                                 <li><a href="#contact" className="hover:text-blue-200">Contact</a></li>
                                 <li>
                                     <Link to="/cart" className={`relative px-3 py-1 rounded 
                                         ${cartItemCount > 0 
-                                            ? (darkMode ? 'bg-blue-900 text-white' : 'bg-white text-gray-900') 
+                                            ? (darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900') 
                                             : 'hover:text-blue-200'}`}>
-                                        Cart
+                                        <span role="img" aria-label="cart">🛒</span>
                                         {cartItemCount > 0 && (
                                             <span className={`absolute -top-2 -right-2 text-xs rounded-full px-2 py-0.5 
-                                                ${darkMode ? 'bg-white text-black' : 'bg-blue-900 text-white'}`}>
+                                                ${darkMode ? 'bg-white text-gray-900' : 'bg-white text-blue-600'}`}>
                                                 {cartItemCount}
                                             </span>
                                         )}
@@ -128,35 +130,42 @@ const App = () => {
                         {/* Botón modo oscuro (desktop) */}
                         <button
                             onClick={toggleDarkMode}
-                            className={`hidden sm:block ${darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900'} rounded-full p-2`}
-                        >
+                            className={`hidden sm:block ${darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900'} rounded-full p-2`}>
                             {darkMode ? '🌙' : '🌞'}
                         </button>
 
                         {/* Mobile menu */}
                         <div className="sm:hidden flex items-center space-x-4">
-                            <button
-                                onClick={toggleDarkMode}
-                                className={`${darkMode ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900'} rounded-full p-2`}
-                            >
-                                {darkMode ? '🌙' : '🌞'}
-                            </button>
                             <button type="button" className="text-white" onClick={toggleMenu}>
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
+                            </button>
+                            <Link to="/cart" className={`relative px-3 py-1 rounded ${cartItemCount > 0 
+                                ? (darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900') 
+                                : 'hover:text-blue-200'}`}>
+                                <span role="img" aria-label="cart">🛒</span>
+                                {cartItemCount > 0 && (
+                                    <span className={`absolute -top-2 -right-2 text-xs rounded-full px-2 py-0.5 
+                                        ${darkMode ? 'bg-white text-blue-900' : 'bg-white text-blue-600'}`}>
+                                        {cartItemCount}
+                                    </span>
+                                )}
+                            </Link>
+                            <button
+                                onClick={toggleDarkMode}
+                                className={`${darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900'} rounded-full p-2`}>
+                                {darkMode ? '🌙' : '🌞'}
                             </button>
                         </div>
                     </div>
                 </header>
 
                 {/* Menú móvil */}
-                <div className={`sm:hidden ${menuVisible ? "block" : "hidden"} bg-blue-600 text-white z-40 fixed top-16 left-0 w-full`}>
+                <div className={`sm:hidden ${menuVisible ? "block" : "hidden"} bg-blue-600 text-white dark:bg-blue-900 z-40 fixed top-16 left-0 w-full`}>
                     <ul className="flex flex-col space-y-4 p-4">
-                        <li><Link to="/" className="hover:text-blue-200" onClick={toggleMenu}>Home</Link></li>
                         <li><Link to="/shop" className="hover:text-blue-200" onClick={toggleMenu}>Shop</Link></li>
                         <li><a href="#contact" className="hover:text-blue-200" onClick={toggleMenu}>Contact</a></li>
-                        <li><a href="cart" className="hover:text-blue-200" onClick={toggleMenu}>Cart</a></li>
                         {!user ? (
                             <>
                                 <li><Link to="/login" className="hover:text-blue-200" onClick={toggleMenu}>Login</Link></li>
@@ -169,7 +178,7 @@ const App = () => {
                 </div>
 
                 {/* Contenido principal */}
-                <main className="flex-grow bg-gray-100 dark:bg-gray-900 pt-16"> {/* Agregué 'pt-16' para dar espacio al header fijo */}
+                <main className="flex-grow bg-gray-100 dark:bg-gray-900 pt-16">
                     <Routes>
                         <Route path="/" element={<Home tablas={tablas} />} />
                         <Route path="/login" element={!user ? <Login /> : <Navigate to="/account" />} />
