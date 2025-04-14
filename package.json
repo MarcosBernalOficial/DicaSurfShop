@@ -1,7 +1,6 @@
 {
   "name": "surfshop",
   "version": "1.0.0",
-  "main": "postcss.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
