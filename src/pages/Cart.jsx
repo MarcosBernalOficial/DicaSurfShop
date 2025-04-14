@@ -3,31 +3,41 @@ import { useCart } from "../context/CartContext";
 import { MinusCircle, Trash2 } from "lucide-react";
 
 const Cart = () => {
-    const { cart, removeFromCart, decreaseFromCart, clearCart, removeOutOfStockProducts } = useCart();
+    const {
+        cart,
+        removeFromCart,
+        decreaseFromCart,
+        clearCart,
+        removeOutOfStockProducts,
+    } = useCart();
 
     useEffect(() => {
-        // Llamamos a removeOutOfStockProducts cada vez que el carrito cambia
+        // Solo eliminamos productos sin stock al montar el componente
         removeOutOfStockProducts();
-    }, [cart, removeOutOfStockProducts]);
+    }, [removeOutOfStockProducts]);
 
     const total = cart.reduce((acc, item) => {
-        const precio = parseFloat(item.precio) || 0;
-        const cantidad = parseInt(item.quantity) || 0;
+        const precio = Number(item.precio) || 0;
+        const cantidad = Number(item.quantity) || 0;
         return acc + precio * cantidad;
     }, 0);
 
     return (
         <div className="max-w-4xl mx-auto p-4 my-8 bg-white shadow-md rounded-xl dark:bg-gray-800 min-h-screen">
-            <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">🛒 Tu Carrito</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">
+                🛒 Tu Carrito
+            </h2>
 
             {cart.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400">Tu carrito está vacío.</p>
+                <p className="text-center text-gray-500 dark:text-gray-400">
+                    Tu carrito está vacío.
+                </p>
             ) : (
                 <>
                     <ul className="space-y-4">
                         {cart.map((item) => {
-                            const precio = parseFloat(item.precio) || 0;
-                            const cantidad = parseInt(item.quantity) || 0;
+                            const precio = Number(item.precio) || 0;
+                            const cantidad = Number(item.quantity) || 0;
 
                             return (
                                 <li
@@ -41,7 +51,9 @@ const Cart = () => {
                                             className="w-20 h-20 object-cover rounded-lg"
                                         />
                                         <div>
-                                            <h3 className="text-lg font-semibold dark:text-white">{item.nombre}</h3>
+                                            <h3 className="text-lg font-semibold dark:text-white">
+                                                {item.nombre}
+                                            </h3>
                                             <p className="text-sm text-gray-600 dark:text-gray-300">
                                                 ${precio.toFixed(2)} x {cantidad}
                                             </p>

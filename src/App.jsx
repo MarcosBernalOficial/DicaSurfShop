@@ -10,6 +10,8 @@ import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
 
+import { supabase } from './supabase'; // Asegúrate de importar el cliente Supabase
+
 const App = () => {
     const { user } = useAuth();
     const { cart } = useCart();
@@ -17,50 +19,20 @@ const App = () => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
 
+    // Cargar productos desde Supabase
     useEffect(() => {
-        const productos = [
-            {
-                id: 1,
-                nombre: "Classic Surfboard",
-                precio: 499.99,
-                imagen: "/images/surfboard1.jpg",
-                categoria: "Tablas de surf",
-                stock: 5,
-            },
-            {
-                id: 2,
-                nombre: "Wetsuit Pro",
-                precio: 199.99,
-                imagen: "/images/wetsuit1.jpg",
-                categoria: "Trajes de neoprene",
-                stock: 3,
-            },
-            {
-                id: 3,
-                nombre: "Surf Gloves",
-                precio: 29.99,
-                imagen: "/images/gloves1.jpg",
-                categoria: "Accesorios",
-                stock: 10,
-            },
-            {
-                id: 4,
-                nombre: "Booties Xtreme",
-                precio: 59.99,
-                imagen: "/images/booties1.jpg",
-                categoria: "Accesorios",
-                stock: 0,
-            },
-            {
-                id: 5,
-                nombre: "Neoprene Hood",
-                precio: 39.99,
-                imagen: "/images/hood1.jpg",
-                categoria: "Accesorios",
-                stock: 8,
-            },
-        ];
-        setTablas(productos);
+        const fetchTablas = async () => {
+            const { data, error } = await supabase
+                .from('productos') // Cambia 'productos' por el nombre de tu tabla
+                .select('*');
+            if (error) {
+                console.error("Error al cargar productos:", error.message);
+            } else {
+                setTablas(data);
+            }
+        };
+
+        fetchTablas();
 
         const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
@@ -101,7 +73,7 @@ const App = () => {
                             <ul className="flex space-x-6">
                                 {/* Eliminar Home */}
                                 <li><Link to="/shop" className="hover:text-blue-200">Shop</Link></li>
-                                <li><a href="#contact" className="hover:text-blue-200">Contact</a></li>
+                                <li><Link to="#contact" className="hover:text-blue-200">Contact</Link></li>
                                 <li>
                                     <Link to="/cart" className={`relative px-3 py-1 rounded 
                                         ${cartItemCount > 0 
@@ -165,7 +137,7 @@ const App = () => {
                 <div className={`sm:hidden ${menuVisible ? "block" : "hidden"} bg-blue-600 text-white dark:bg-blue-900 z-40 fixed top-16 left-0 w-full`}>
                     <ul className="flex flex-col space-y-4 p-4">
                         <li><Link to="/shop" className="hover:text-blue-200" onClick={toggleMenu}>Shop</Link></li>
-                        <li><a href="#contact" className="hover:text-blue-200" onClick={toggleMenu}>Contact</a></li>
+                        <li><Link to="#contact" className="hover:text-blue-200" onClick={toggleMenu}>Contact</Link></li>
                         {!user ? (
                             <>
                                 <li><Link to="/login" className="hover:text-blue-200" onClick={toggleMenu}>Login</Link></li>

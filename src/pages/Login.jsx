@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import bcrypt from 'bcryptjs'; // Importa bcryptjs
-import { supabase } from '../supabase'; // Importa la configuración de supabase
+import bcrypt from 'bcryptjs';
+import { supabase } from '../supabase';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,7 +13,6 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            // Buscar el usuario en Supabase por email
             const { data, error: loginError } = await supabase
                 .from('users')
                 .select('email, password')
@@ -23,47 +22,67 @@ const Login = () => {
             if (loginError) throw loginError;
 
             if (data) {
-                // Comparar la contraseña ingresada con la encriptada en la base de datos
                 const isPasswordCorrect = await bcrypt.compare(password, data.password);
 
                 if (isPasswordCorrect) {
-                    // Si la contraseña es correcta, redirige al usuario
                     navigate('/');
                 } else {
-                    setError('Credenciales incorrectas');
+                    setError('❌ Credenciales incorrectas');
                 }
             } else {
-                setError('No se encontró el usuario');
+                setError('❌ No se encontró el usuario');
             }
         } catch (error) {
-            setError(error.message);
+            setError(`Error: ${error.message}`);
         }
     };
 
     return (
-        <div>
-            {/* Formulario de inicio de sesión */}
-            <form onSubmit={handleSubmit}>
-                <h2>Iniciar Sesión</h2>
-                {error && <div>{error}</div>}
-                <label>Email:</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <label>Contraseña:</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Iniciar sesión</button>
-                <div>
-                    ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+        <div className="max-w-md mx-auto my-10 p-8 bg-white dark:bg-gray-800 shadow-md rounded-xl">
+            <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Iniciar Sesión</h2>
+
+            {error && (
+                <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded dark:bg-red-800 dark:text-red-200">
+                    {error}
                 </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="mt-1 w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="mt-1 w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition"
+                >
+                    Iniciar sesión
+                </button>
+
+                <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+                    ¿No tienes cuenta?{" "}
+                    <Link to="/register" className="text-blue-600 hover:underline dark:text-blue-400">
+                        Regístrate aquí
+                    </Link>
+                </p>
             </form>
         </div>
     );
