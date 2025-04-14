@@ -92,7 +92,7 @@ const App = () => {
         <Router>
             <div className={`font-sans ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'} min-h-screen flex flex-col`}>
                 {/* Encabezado */}
-                <header className={`${darkMode ? 'bg-blue-600' : 'bg-blue-600'} text-white p-4 shadow-md fixed w-full top-0 z-30`}>
+                <header className={`${darkMode ? 'bg-blue-900' : 'bg-blue-600'} text-white p-4 shadow-md fixed w-full top-0 z-30`}>
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <div className={`${darkMode ? 'text-gray-100' : 'text-gray-100'} text-2xl font-bold`}>SurfShop</div>
                         <nav className="hidden sm:flex">
@@ -128,7 +128,7 @@ const App = () => {
                         {/* Botón modo oscuro (desktop) */}
                         <button
                             onClick={toggleDarkMode}
-                            className={`hidden sm:block ${darkMode ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900'} rounded-full p-2`}
+                            className={`hidden sm:block ${darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900'} rounded-full p-2`}
                         >
                             {darkMode ? '🌙' : '🌞'}
                         </button>
@@ -156,7 +156,7 @@ const App = () => {
                         <li><Link to="/" className="hover:text-blue-200" onClick={toggleMenu}>Home</Link></li>
                         <li><Link to="/shop" className="hover:text-blue-200" onClick={toggleMenu}>Shop</Link></li>
                         <li><a href="#contact" className="hover:text-blue-200" onClick={toggleMenu}>Contact</a></li>
-                        <li><a href="#cart" className="hover:text-blue-200" onClick={toggleMenu}>Cart</a></li>
+                        <li><a href="cart" className="hover:text-blue-200" onClick={toggleMenu}>Cart</a></li>
                         {!user ? (
                             <>
                                 <li><Link to="/login" className="hover:text-blue-200" onClick={toggleMenu}>Login</Link></li>
@@ -169,7 +169,7 @@ const App = () => {
                 </div>
 
                 {/* Contenido principal */}
-                <main className="flex-grow bg-gray-900 pt-16"> {/* Agregué 'pt-16' para dar espacio al header fijo */}
+                <main className="flex-grow bg-gray-100 dark:bg-gray-900 pt-16"> {/* Agregué 'pt-16' para dar espacio al header fijo */}
                     <Routes>
                         <Route path="/" element={<Home tablas={tablas} />} />
                         <Route path="/login" element={!user ? <Login /> : <Navigate to="/account" />} />
@@ -182,13 +182,13 @@ const App = () => {
                 </main>
 
                 {/* Footer */}
-                <footer className="bg-gray-800 text-white py-6 mt-auto">
+                <footer className="bg-blue-700 dark:bg-blue-900 text-white py-6 mt-auto">
                     <div className="max-w-7xl mx-auto text-center">
                         <p>&copy; 2025 SurfShop. All rights reserved.</p>
                         <div className="mt-4">
-                            <a href="#" className="text-blue-400 mx-3 hover:underline">Facebook</a>
-                            <a href="#" className="text-blue-400 mx-3 hover:underline">Twitter</a>
-                            <a href="#" className="text-blue-400 mx-3 hover:underline">Instagram</a>
+                            <a href="#" className="text-gray-100 mx-3 hover:underline">Facebook</a>
+                            <a href="#" className="text-gray-100 mx-3 hover:underline">Twitter</a>
+                            <a href="#" className="text-gray-100 mx-3 hover:underline">Instagram</a>
                         </div>
                     </div>
                 </footer>
