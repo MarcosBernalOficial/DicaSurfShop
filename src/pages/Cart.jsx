@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { MinusCircle, Trash2 } from "lucide-react";
 
 const Cart = () => {
-    const { cart, removeFromCart, decreaseFromCart, clearCart } = useCart();
+    const { cart, removeFromCart, decreaseFromCart, clearCart, removeOutOfStockProducts } = useCart();
+
+    useEffect(() => {
+        // Llamamos a removeOutOfStockProducts cada vez que el carrito cambia
+        removeOutOfStockProducts();
+    }, [cart, removeOutOfStockProducts]);
 
     const total = cart.reduce((acc, item) => {
         const precio = parseFloat(item.precio) || 0;
