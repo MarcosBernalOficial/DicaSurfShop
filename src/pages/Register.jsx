@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';  // Importa bcrypt
 import { supabase } from '../supabase';
 
 const Register = () => {
@@ -19,14 +19,17 @@ const Register = () => {
         }
 
         try {
+            // Cifra la contraseña antes de enviarla a la base de datos
             const hashedPassword = await bcrypt.hash(password, 10);
 
+            // Inserta el usuario en la base de datos de Supabase
             const { error: signupError } = await supabase
                 .from('users')
                 .insert([{ email, password: hashedPassword }]);
 
             if (signupError) throw signupError;
 
+            // Redirige a la página de login si el registro es exitoso
             navigate('/login');
         } catch (error) {
             setError(error.message);

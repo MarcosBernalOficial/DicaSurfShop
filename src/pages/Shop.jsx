@@ -15,9 +15,11 @@ const Shop = () => {
         const fetchProductos = async () => {
             try {
                 const { data, error } = await supabase.from("productos").select("*");
-
+    
+                console.log("Productos obtenidos:", data); // 👈 Agregá esto
+    
                 if (error) throw error;
-
+    
                 setProductos(data);
             } catch (error) {
                 console.error("Error al obtener productos:", error.message);
@@ -25,7 +27,7 @@ const Shop = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchProductos();
     }, []);
 
