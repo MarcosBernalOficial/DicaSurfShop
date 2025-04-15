@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useCart } from "../context/CartContext";
-import { MinusCircle, Trash2 } from "lucide-react";
+import { MinusCircle, Trash2, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
     const {
@@ -12,7 +13,6 @@ const Cart = () => {
     } = useCart();
 
     useEffect(() => {
-        // Solo eliminamos productos sin stock al montar el componente
         removeOutOfStockProducts();
     }, [removeOutOfStockProducts]);
 
@@ -21,6 +21,22 @@ const Cart = () => {
         const cantidad = Number(item.quantity) || 0;
         return acc + precio * cantidad;
     }, 0);
+
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {
+            stars.push(
+                <Star
+                    key={i}
+                    className={`w-4 h-4 ${
+                        i <= rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-500"
+                    }`}
+                    fill={i <= rating ? "currentColor" : "none"}
+                />
+            );
+        }
+        return stars;
+    };
 
     return (
         <div className="max-w-4xl mx-auto p-4 my-8 bg-white shadow-md rounded-xl dark:bg-gray-800 min-h-screen">
@@ -38,6 +54,7 @@ const Cart = () => {
                         {cart.map((item) => {
                             const precio = Number(item.precio) || 0;
                             const cantidad = Number(item.quantity) || 0;
+                            const calificacion = Number(item.calificacion) || 0;
 
                             return (
                                 <li
@@ -45,18 +62,29 @@ const Cart = () => {
                                     className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm"
                                 >
                                     <div className="flex items-center gap-4 w-full sm:w-auto">
-                                        <img
-                                            src={item.imagen}
-                                            alt={item.nombre}
-                                            className="w-20 h-20 object-cover rounded-lg"
-                                        />
+                                        <Link to={`/producto/${item.id}`}>
+                                            <img
+                                                src={item.imagen}
+                                                alt={item.nombre}
+                                                className="w-20 h-20 object-cover rounded-lg hover:opacity-80 transition"
+                                            />
+                                        </Link>
                                         <div>
-                                            <h3 className="text-lg font-semibold dark:text-white">
+                                            <Link
+                                                to={`/producto/${item.id}`}
+                                                className="text-lg font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                                            >
                                                 {item.nombre}
-                                            </h3>
+                                            </Link>
                                             <p className="text-sm text-gray-600 dark:text-gray-300">
                                                 ${precio.toFixed(2)} x {cantidad}
                                             </p>
+                                            {item.descripcion && (
+                                                <p className="text-xs mt-1 text-gray-500 dark:text-gray-400 line-clamp-2">
+                                                    {item.descripcion}
+                                                </p>
+                                            )}
+                                            <div className="flex mt-1">{renderStars(calificacion)}</div>
                                         </div>
                                     </div>
 

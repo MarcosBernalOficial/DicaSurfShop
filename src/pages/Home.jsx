@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { supabase } from "../supabase";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const { addToCart } = useCart();
@@ -32,16 +33,13 @@ const Home = () => {
         const productosDeCategoria = productos.filter(
             (producto) => producto.categoria === categoria
         );
-        return productosDeCategoria.find(
-            (producto) => producto.stock > 0
-        );
+        return productosDeCategoria.find((producto) => producto.stock > 0);
     };
 
     const productosPorCategoria = (categoria) => {
         return productos
             .filter((producto) => producto.categoria === categoria)
             .sort((a, b) => {
-                // Ordenar los productos: primero los que tienen stock
                 if (a.stock > 0 && b.stock === 0) return -1;
                 if (a.stock === 0 && b.stock > 0) return 1;
                 return 0;
@@ -61,15 +59,20 @@ const Home = () => {
                                 key={categoria}
                                 className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md flex flex-col items-center"
                             >
-                                <img
-                                    src={productoDestacado.imagen}
-                                    alt={productoDestacado.nombre}
-                                    className="w-48 h-48 object-cover rounded-lg mb-4"
-                                />
-                                <h3 className="text-xl font-semibold">{productoDestacado.nombre}</h3>
-                                <p className="text-gray-600 dark:text-gray-300 mt-2">
-                                    ${productoDestacado.precio}
-                                </p>
+                                <Link
+                                    to={`/producto/${productoDestacado.id}`}
+                                    className="w-full flex flex-col items-center"
+                                >
+                                    <img
+                                        src={productoDestacado.imagen}
+                                        alt={productoDestacado.nombre}
+                                        className="w-48 h-48 object-cover rounded-lg mb-4"
+                                    />
+                                    <h3 className="text-xl font-semibold">{productoDestacado.nombre}</h3>
+                                    <p className="text-gray-600 dark:text-gray-300 mt-2">
+                                        ${productoDestacado.precio}
+                                    </p>
+                                </Link>
                                 <button
                                     onClick={() => addToCart(productoDestacado)}
                                     className={`mt-4 py-2 px-4 rounded-lg transition-all w-full ${
@@ -98,9 +101,9 @@ const Home = () => {
                             {productosPorCategoria(categoria).map((producto) => (
                                 <div
                                     key={producto.id}
-                                    className="flex-shrink-0 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all w-60 flex flex-col justify-between min-h-[370px]"
+                                    className="flex-shrink-0 w-60 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all flex flex-col justify-between min-h-[370px]"
                                 >
-                                    <div>
+                                    <Link to={`/producto/${producto.id}`}>
                                         <img
                                             src={producto.imagen}
                                             alt={producto.nombre}
@@ -112,7 +115,7 @@ const Home = () => {
                                         <p className="text-gray-600 dark:text-gray-300 mt-2">
                                             ${producto.precio}
                                         </p>
-                                    </div>
+                                    </Link>
                                     <button
                                         onClick={() => addToCart(producto)}
                                         className={`mt-4 py-2 px-4 rounded-lg transition-all ${

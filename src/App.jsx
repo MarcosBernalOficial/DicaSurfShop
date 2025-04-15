@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from "./context/AuthContext";
 import { useCart } from "./context/CartContext";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import ProductDetail from './components/ProductDetail';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -159,6 +160,7 @@ const App = () => {
                         <Route path="/shop" element={<Shop />} />
                         <Route path="*" element={<Navigate to="/" />} />
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/producto/:id" element={<ProductDetail />} />
                     </Routes>
                 </main>
 

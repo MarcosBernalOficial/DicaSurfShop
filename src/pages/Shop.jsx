@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
-import { supabase } from "../supabase"; // Asegurate de tener este archivo configurado
+import { supabase } from "../supabase";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
     const { addToCart } = useCart();
@@ -15,11 +16,7 @@ const Shop = () => {
         const fetchProductos = async () => {
             try {
                 const { data, error } = await supabase.from("productos").select("*");
-    
-                console.log("Productos obtenidos:", data); // 👈 Agregá esto
-    
                 if (error) throw error;
-    
                 setProductos(data);
             } catch (error) {
                 console.error("Error al obtener productos:", error.message);
@@ -27,7 +24,7 @@ const Shop = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchProductos();
     }, []);
 
@@ -55,7 +52,6 @@ const Shop = () => {
                 (!aplicarFiltros || (dentroRangoMin && dentroRangoMax && coincideSector));
         })
         .sort((a, b) => {
-            // Primero los productos en stock
             if (a.stock > 0 && b.stock === 0) return -1;
             if (a.stock === 0 && b.stock > 0) return 1;
             return 0;
@@ -148,18 +144,23 @@ const Shop = () => {
                                         {productosFiltrados
                                             .filter((p) => p.categoria === categoria)
                                             .map((producto) => (
-                                                <div
-                                                    key={producto.id}
-                                                    className="flex-shrink-0 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all w-60 flex flex-col"
-                                                >
-                                                    <img
-                                                        src={producto.imagen}
-                                                        alt={producto.nombre}
-                                                        className="h-48 w-full object-cover rounded-lg mb-4"
-                                                    />
-                                                    <h3 className="text-xl font-semibold mb-1 min-h-[3.5rem]">{producto.nombre}</h3>
-                                                    <p className="text-gray-600 dark:text-gray-300 mb-3">${producto.precio}</p>
-                                                    <div className="mt-auto">
+                                                <div key={producto.id} className="flex-shrink-0 w-60 flex flex-col">
+                                                    <Link to={`/producto/${producto.id}`}>
+                                                        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all flex flex-col h-full">
+                                                            <img
+                                                                src={producto.imagen}
+                                                                alt={producto.nombre}
+                                                                className="h-48 w-full object-cover rounded-lg mb-4"
+                                                            />
+                                                            <h3 className="text-xl font-semibold mb-1 min-h-[3.5rem]">
+                                                                {producto.nombre}
+                                                            </h3>
+                                                            <p className="text-gray-600 dark:text-gray-300 mb-3">
+                                                                ${producto.precio}
+                                                            </p>
+                                                        </div>
+                                                    </Link>
+                                                    <div className="mt-2">
                                                         <button
                                                             onClick={() => addToCart(producto)}
                                                             className={`w-full py-2 px-4 rounded-lg transition-all ${
