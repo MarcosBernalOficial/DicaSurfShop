@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import bcrypt from 'bcryptjs';  // Importa bcrypt
-import { supabase } from '../supabase';
+import { supabase } from '../supabase';  // Usamos supabase para manejar el registro
 
 const Register = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('');  // Nuevo campo para el nombre
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
@@ -19,15 +19,26 @@ const Register = () => {
         }
 
         try {
-            // Cifra la contraseña antes de enviarla a la base de datos
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            // Inserta el usuario en la base de datos de Supabase
-            const { error: signupError } = await supabase
-                .from('users')
-                .insert([{ email, password: hashedPassword }]);
+            // Usamos supabase para crear el usuario
+            const { user, error: signupError } = await supabase.auth.signUp({
+                id: data.user.id,
+                email,
+                password,
+                options: {
+                    data: {
+                        name // Enviamos el nombre al campo de usuario
+                    }
+                }
+            });
 
             if (signupError) throw signupError;
+
+            // Ahora, si la creación del usuario fue exitosa, insertamos el nombre en la tabla "users" (si es necesario)
+            const { error: insertError } = await supabase
+                .from('users')
+                .upsert([{ id: user.id, email, name }]);  // Usamos upsert para insertar o actualizar
+
+            if (insertError) throw insertError;
 
             // Redirige a la página de login si el registro es exitoso
             navigate('/login');
@@ -47,6 +58,17 @@ const Register = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
+                    <input
+                        type="text"
+                        className="mt-1 w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                </div>
+
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                     <input

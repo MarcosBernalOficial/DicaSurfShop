@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
 import { supabase } from '../supabase';
 
 const Login = () => {
@@ -13,24 +12,22 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const { data, error: loginError } = await supabase
-                .from('users')
-                .select('email, password')
-                .eq('email', email)
-                .single();
+            // Autenticar al usuario usando el método de Supabase
+            const { data, error: loginError } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
 
-            if (loginError) throw loginError;
+            if (loginError) {
+                setError('❌ Credenciales incorrectas');
+                return;
+            }
 
             if (data) {
-                const isPasswordCorrect = await bcrypt.compare(password, data.password);
-
-                if (isPasswordCorrect) {
-                    navigate('/');
-                } else {
-                    setError('❌ Credenciales incorrectas');
-                }
+                // Redirigir al usuario a la página principal (o la ruta que elijas)
+                navigate('/');
             } else {
-                setError('❌ No se encontró el usuario');
+                setError('❌ No se pudo iniciar sesión');
             }
         } catch (error) {
             setError(`Error: ${error.message}`);

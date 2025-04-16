@@ -3,6 +3,12 @@ import { useAuth } from "./context/AuthContext";
 import { useCart } from "./context/CartContext";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import ProductDetail from './components/ProductDetail';
+import AuthForm from './components/AuthForm';
+import cartIcon from './assets/cart.png'
+import moonIcon from './assets/moon.png'
+import sunIcon from './assets/sun.png'
+import shopIcon from './assets/shop.png'
+
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -10,6 +16,7 @@ import Account from './pages/Account';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
+import Contact from './pages/Contact';
 
 import { supabase } from './supabase'; // Asegúrate de importar el cliente Supabase
 
@@ -68,19 +75,19 @@ const App = () => {
                 <header className={`${darkMode ? 'bg-blue-900' : 'bg-blue-600'} text-white p-4 shadow-md fixed w-full top-0 z-30`}>
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <Link to="/" className={`${darkMode ? 'text-gray-100' : 'text-gray-100'} text-2xl font-bold`}>
-                            SurfShop
+                            SQuiero
                         </Link>
                         <nav className="hidden sm:flex">
                             <ul className="flex space-x-6">
                                 {/* Eliminar Home */}
-                                <li><Link to="/shop" className="hover:text-blue-200">Shop</Link></li>
-                                <li><Link to="#contact" className="hover:text-blue-200">Contact</Link></li>
+                                <li><Link to="/shop" className="hover:text-blue-200"><img src={shopIcon} alt="Carrito" className="w-6 h-6 object-contain inline" /></Link></li>
+                                <li><Link to="/contact" className="hover:text-blue-200">Contact</Link></li>
                                 <li>
                                     <Link to="/cart" className={`relative px-3 py-1 rounded 
                                         ${cartItemCount > 0 
                                             ? (darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900') 
                                             : 'hover:text-blue-200'}`}>
-                                        <span role="img" aria-label="cart">🛒</span>
+                                        <img src={cartIcon} alt="Carrito" className="w-6 h-6 object-contain inline" />
                                         {cartItemCount > 0 && (
                                             <span className={`absolute -top-2 -right-2 text-xs rounded-full px-2 py-0.5 
                                                 ${darkMode ? 'bg-white text-gray-900' : 'bg-white text-blue-600'}`}>
@@ -104,7 +111,7 @@ const App = () => {
                         <button
                             onClick={toggleDarkMode}
                             className={`hidden sm:block ${darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900'} rounded-full p-2`}>
-                            {darkMode ? '🌙' : '🌞'}
+                            {darkMode ? <img src={moonIcon} alt="moon" className="w-6 h-6 object-contain inline" /> : <img src={sunIcon} alt="moon" className="w-6 h-6 object-contain inline" />}
                         </button>
 
                         {/* Mobile menu */}
@@ -117,7 +124,7 @@ const App = () => {
                             <Link to="/cart" className={`relative px-3 py-1 rounded ${cartItemCount > 0 
                                 ? (darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900') 
                                 : 'hover:text-blue-200'}`}>
-                                <span role="img" aria-label="cart">🛒</span>
+                                <img src={cartIcon} alt="Carrito" className="w-6 h-6 object-contain inline" />
                                 {cartItemCount > 0 && (
                                     <span className={`absolute -top-2 -right-2 text-xs rounded-full px-2 py-0.5 
                                         ${darkMode ? 'bg-white text-blue-900' : 'bg-white text-blue-600'}`}>
@@ -128,7 +135,7 @@ const App = () => {
                             <button
                                 onClick={toggleDarkMode}
                                 className={`${darkMode ? 'bg-blue-900 text-white' : 'bg-blue-600 text-gray-900'} rounded-full p-2`}>
-                                {darkMode ? '🌙' : '🌞'}
+                                {darkMode ? <img src={moonIcon} alt="moon" className="w-6 h-6 object-contain inline" /> : <img src={sunIcon} alt="moon" className="w-6 h-6 object-contain inline" />}
                             </button>
                         </div>
                     </div>
@@ -138,7 +145,7 @@ const App = () => {
                 <div className={`sm:hidden ${menuVisible ? "block" : "hidden"} bg-blue-600 text-white dark:bg-blue-900 z-40 fixed top-16 left-0 w-full`}>
                     <ul className="flex flex-col space-y-4 p-4">
                         <li><Link to="/shop" className="hover:text-blue-200" onClick={toggleMenu}>Shop</Link></li>
-                        <li><Link to="#contact" className="hover:text-blue-200" onClick={toggleMenu}>Contact</Link></li>
+                        <li><Link to="/contact" className="hover:text-blue-200" onClick={toggleMenu}>Contact</Link></li>
                         {!user ? (
                             <>
                                 <li><Link to="/login" className="hover:text-blue-200" onClick={toggleMenu}>Login</Link></li>
@@ -160,6 +167,7 @@ const App = () => {
                         <Route path="/shop" element={<Shop />} />
                         <Route path="*" element={<Navigate to="/" />} />
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/contact" element={<Contact />} />
                         <Route path="/producto/:id" element={<ProductDetail />} />
                     </Routes>
                 </main>

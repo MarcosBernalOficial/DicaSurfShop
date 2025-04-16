@@ -9,10 +9,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchProductos = async () => {
-            const { data, error } = await supabase
-                .from("productos")
-                .select("*");
-
+            const { data, error } = await supabase.from("productos").select("*");
             if (error) {
                 console.error("Error al cargar productos:", error);
             } else {
@@ -59,10 +56,7 @@ const Home = () => {
                                 key={categoria}
                                 className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md flex flex-col items-center"
                             >
-                                <Link
-                                    to={`/producto/${productoDestacado.id}`}
-                                    className="w-full flex flex-col items-center"
-                                >
+                                <Link to={`/producto/${productoDestacado.id}`} className="w-full flex flex-col items-center">
                                     <img
                                         src={productoDestacado.imagen}
                                         alt={productoDestacado.nombre}
@@ -101,7 +95,7 @@ const Home = () => {
                             {productosPorCategoria(categoria).map((producto) => (
                                 <div
                                     key={producto.id}
-                                    className="flex-shrink-0 w-60 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all flex flex-col justify-between min-h-[370px]"
+                                    className="flex-shrink-0 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all w-60 flex flex-col justify-between min-h-[370px]"
                                 >
                                     <Link to={`/producto/${producto.id}`}>
                                         <img
