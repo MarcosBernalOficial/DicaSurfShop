@@ -22,12 +22,11 @@ main {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #1d4ed8; /* Azul de tu paleta */
-    border-radius: 10px;
+    background-color: #000; /* Azul de tu paleta */
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #e5e7eb; /* gray-200 */
+    background-color: #fff; /* gray-200 */
 }
 
 /* Scrollbar - modo oscuro */
@@ -37,12 +36,11 @@ main {
 }
 
 .dark ::-webkit-scrollbar-thumb {
-    background-color: #1d4ed8; /* gray-600 */
-    border-radius: 10px;
+    background-color: #000; /* gray-600 */
 }
 
 .dark ::-webkit-scrollbar-track {
-    background-color: #2d3748; /* gray-800 */
+    background-color: #fff; /* gray-800 */
 }
 
 
@@ -53,12 +51,33 @@ body {
 }
 
 body.dark {
-    background-color: #1a202c; /* Fondo oscuro */
+    background-color: #000; /* Fondo oscuro */
     color: white; /* Texto blanco */
 }
 
 body:not(.dark) {
-    background-color: #f7fafc; /* Fondo claro */
+    background-color: #fff; /* Fondo claro */
     color: #2d3748; /* Texto oscuro */
 }
+
+
+/* Ocultar las flechas predeterminadas para todos los navegadores */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+}
+
+/* Para Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Puedes agregar estos estilos para garantizar que no haya ninguna flecha visible */
+input[type="number"] {
+    appearance: none;
+}
+
 

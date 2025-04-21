@@ -29,9 +29,9 @@ const Shop = () => {
     }, []);
 
     const categorias = {
-        tablas: "Tablas de Surf",
-        trajes: "Trajes de Neoprene",
-        accesorios: "Accesorios de Neoprene",
+        bolso: "Bolsos",
+        cartera: "Carteras",
+        mochila: "Mochilas",
     };
 
     const productosFiltrados = productos
@@ -62,17 +62,17 @@ const Shop = () => {
     );
 
     return (
-        <div className="max-w-7xl mx-auto py-12 px-4 bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100">
+        <div className="max-w-7xl mx-auto py-12 px-4 bg-white dark:bg-black min-h-screen text-black dark:text-white">
             <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
                 <input
                     type="text"
-                    placeholder="Buscar por nombre o sector..."
-                    className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg px-4 py-2 w-full sm:w-1/2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Buscar..."
+                    className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-black dark:text-white rounded-lg px-4 py-2 w-full sm:w-1/2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-200"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
                 <button
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                    className="bg-blue-400 dark:bg-blue-200 text-black  px-6 py-2 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-400 transition"
                     onClick={() => setMostrarFiltros(!mostrarFiltros)}
                 >
                     {mostrarFiltros ? "Ocultar filtros" : "Mostrar filtros"}
@@ -80,42 +80,42 @@ const Shop = () => {
             </div>
 
             {mostrarFiltros && (
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-10">
+                <div className="bg-white dark:bg-black p-4 rounded-lg shadow-md mb-10">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <input
                             type="number"
                             placeholder="Precio mínimo"
-                            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2 shadow-sm"
+                            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-black dark:text-white rounded-lg px-4 py-2  focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-200"
                             value={filtros.precioMin}
                             onChange={(e) => setFiltros({ ...filtros, precioMin: e.target.value })}
                         />
                         <input
                             type="number"
                             placeholder="Precio máximo"
-                            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2 shadow-sm"
+                            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-black dark:text-white rounded-lg px-4 py-2  focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-200"
                             value={filtros.precioMax}
                             onChange={(e) => setFiltros({ ...filtros, precioMax: e.target.value })}
                         />
                         <select
-                            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2 shadow-sm"
+                            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-black dark:text-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-200"
                             value={filtros.categoria}
                             onChange={(e) => setFiltros({ ...filtros, categoria: e.target.value })}
                         >
-                            <option value="">Todos los sectores</option>
-                            <option value="tablas">Tablas de Surf</option>
-                            <option value="trajes">Trajes de Neoprene</option>
-                            <option value="accesorios">Accesorios</option>
+                            <option value="" className="bg-white dark:bg-black text-black dark:text-white">Categorias</option>
+                            <option value="tablas" className="bg-white dark:bg-black text-black dark:text-white">Bolsos</option>
+                            <option value="trajes" className="bg-white dark:bg-black text-black dark:text-white">Riñoneras</option>
+                            <option value="accesorios" className="bg-white dark:bg-black text-black dark:text-white">Mochilas</option>
                         </select>
                     </div>
                     <div className="flex justify-end gap-4">
                         <button
-                            className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+                            className="bg-blue-400 dark:bg-blue-200 text-black dark:text-black px-5 py-2 rounded hover:bg-blue-200 dark:hover:bg-blue-400 transition"
                             onClick={() => setAplicarFiltros(true)}
                         >
                             Aplicar filtros
                         </button>
                         <button
-                            className="text-gray-500 dark:text-gray-300 hover:text-gray-700 underline"
+                            className="text-black dark:text-white underline"
                             onClick={() => {
                                 setFiltros({ precioMin: "", precioMax: "", categoria: "" });
                                 setAplicarFiltros(false);
@@ -146,18 +146,16 @@ const Shop = () => {
                                             .map((producto) => (
                                                 <div key={producto.id} className="flex-shrink-0 w-60 flex flex-col">
                                                     <Link to={`/producto/${producto.id}`}>
-                                                        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-all flex flex-col h-full">
+                                                        <div className="bg-white dark:bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all flex flex-col h-full">
                                                             <img
                                                                 src={producto.imagen}
                                                                 alt={producto.nombre}
                                                                 className="h-48 w-full object-cover rounded-lg mb-4"
                                                             />
-                                                            <h3 className="text-xl font-semibold mb-1 min-h-[3.5rem]">
+                                                            <h3 className="text-black text-xl font-semibold mb-1 min-h-[3.5rem]">
                                                                 {producto.nombre}
                                                             </h3>
-                                                            <p className="text-gray-600 dark:text-gray-300 mb-3">
-                                                                ${producto.precio}
-                                                            </p>
+                                                            <p className="text-black text-l mb-3">${producto.precio}</p>
                                                         </div>
                                                     </Link>
                                                     <div className="mt-2">
@@ -165,8 +163,8 @@ const Shop = () => {
                                                             onClick={() => addToCart(producto)}
                                                             className={`w-full py-2 px-4 rounded-lg transition-all ${
                                                                 producto.stock > 0
-                                                                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                                                                    : "bg-red-100 text-red-700 dark:bg-red-200 dark:text-red-800 cursor-not-allowed"
+                                                                    ? "bg-blue-400 dark:bg-blue-200 text-black  hover:bg-blue-200 dark:hover:bg-blue-400"
+                                                                    : "bg-red-400 dark:bg-red-200 text-red-900 dark:text-red-700 cursor-not-allowed"
                                                             }`}
                                                             disabled={producto.stock === 0}
                                                         >
